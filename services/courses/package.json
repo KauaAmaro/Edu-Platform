@@ -1,0 +1,21 @@
+{
+  "name": "courses-service",
+  "version": "1.0.0",
+  "description": "Serviço de cursos com Prisma",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "@prisma/client": "6.19.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.9",
+    "prisma": "6.19.0"
+  }
+}
