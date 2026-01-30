@@ -5,6 +5,10 @@ Plataforma educacional moderna baseada em **microsserviços** com arquitetura es
 ![Arquitetura](https://img.shields.io/badge/arquitetura-microservices-blue)
 ![Tecnologias](https://img.shields.io/badge/tech-Next.js%20%7C%20Node.js%20%7C%20MongoDB%20%7C%20Kong-green)
 
+<img width="1909" height="961" alt="Image" src="https://github.com/user-attachments/assets/8f080b27-4ffd-487a-a245-97a82efd4cfa" />
+
+<img width="1913" height="966" alt="Image" src="https://github.com/user-attachments/assets/18313e15-1cbd-4795-a370-8a79fb7eec7d" />
+
 
 ###  Componentes Principais
 
