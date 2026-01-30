@@ -80,7 +80,7 @@ docker compose up --build
 |---------|-----|-----------|
 | **Frontend** | http://localhost:8000 | Plataforma principal |
 | **Kong Admin** | http://localhost:8001 | Gerenciamento do gateway |
-| **MongoDB** | mongodb://localhost:27017 | Banco de dados |
+| **PostgreSQL** | postgresql://eduuser:edupass@postgres-auth:5432/auth_db | Banco de dados |
 
 ---
 
