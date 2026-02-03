@@ -2,7 +2,7 @@ _format_version: "3.0"
 _transform: true
 
 services:
-  # === BACKEND SERVICES ===
+  # BACKEND SERVICES 
   - name: auth-service
     url: http://auth-service:4001
     routes:
@@ -24,7 +24,7 @@ services:
         paths: ["/api/enrollments"]
         strip_path: true
 
-  # === PRIVATE FRONTEND (sem prefixo) ===
+  # PRIVATE FRONTEND  
   - name: private-frontend
     url: http://private-frontend:3000
     routes:
@@ -48,7 +48,7 @@ services:
         paths: ["/dashboard"]
         strip_path: false
 
-  # === PUBLIC FRONTEND ===
+  # PUBLIC FRONTEND 
   - name: public-frontend
     url: http://public-frontend:3000
     routes:

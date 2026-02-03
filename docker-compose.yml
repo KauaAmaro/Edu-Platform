@@ -53,6 +53,34 @@ services:
       timeout: 5s
       retries: 10
 
+  postgres-kong:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: kong
+      POSTGRES_PASSWORD: kongpassword
+      POSTGRES_DB: kong
+    networks:
+      - edu-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kong"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  
+  kong-migrations:
+    image: kong:3.6
+    command: kong migrations bootstrap
+    depends_on:
+      - postgres-kong
+    environment:
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: postgres-kong
+      KONG_PG_USER: kong
+      KONG_PG_PASSWORD: kongpassword
+    networks:
+      - edu-net
+
+
   kong:
     image: kong:3.6
     depends_on:
@@ -62,12 +90,10 @@ services:
       - public-frontend
       - private-frontend
     environment:
-      KONG_DATABASE: off
-      KONG_DECLARATIVE_CONFIG: /usr/local/kong/declarative/kong.yml
-      KONG_PROXY_ACCESS_LOG: /dev/stdout
-      KONG_ADMIN_ACCESS_LOG: /dev/stdout
-      KONG_PROXY_ERROR_LOG: /dev/stderr
-      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_DATABASE: postgres
+      KONG_PG_HOST: postgres-kong
+      KONG_PG_USER: kong
+      KONG_PG_PASSWORD: kongpassword
       KONG_ADMIN_LISTEN: "0.0.0.0:8001"
       KONG_PROXY_LISTEN: "0.0.0.0:8000"
     ports:
@@ -78,9 +104,23 @@ services:
     networks:
       - edu-net
     restart: unless-stopped
+  
+  konga:
+    image: pantsel/konga:latest
+    ports:
+      - "1337:1337"
+    environment:
+      - NODE_ENV=production
+      - TOKEN_SECRET=konga
+    networks:
+      - edu-net
+    depends_on:
+      - kong
+    restart: unless-stopped
 
   auth-service:
-    build: ./services/auth
+    image: edu-platform-auth-service:latest
+    #build: ./services/auth
     environment:
       PORT: 4001
       DATABASE_URL: postgresql://eduuser:edupass@postgres-auth:5432/auth_db
@@ -95,7 +135,8 @@ services:
     restart: unless-stopped
 
   courses-service:
-    build: ./services/courses
+    image: edu-platform-courses-service:latest
+    #build: ./services/courses
     environment:
       PORT: 4002
       DATABASE_URL: postgresql://eduuser:edupass@postgres-courses:5432/courses_db
@@ -109,7 +150,8 @@ services:
     restart: unless-stopped
 
   enrollments-service:
-    build: ./services/enrollments
+    image: edu-platform-enrollments-service:latest
+    #build: ./services/enrollments
     environment:
       PORT: 4003
       DATABASE_URL: postgresql://eduuser:edupass@postgres-enrollments:5432/enrollments_db
@@ -123,7 +165,8 @@ services:
     restart: unless-stopped
 
   public-frontend:
-    build: ./frontends/public
+    image: edu-platform-public-frontend:latest
+    #build: ./frontends/public
     expose:
       - "3000"
     networks:
@@ -131,7 +174,8 @@ services:
     restart: unless-stopped
 
   private-frontend:
-    build: ./frontends/private
+    image: edu-platform-private-frontend:latest
+    #build: ./frontends/private
     expose:
       - "3000"
     networks:

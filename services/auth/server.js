@@ -6,7 +6,7 @@ const { PrismaClient } = require('@prisma/client');
 
 const app = express();
 
-// ✅ Nova forma para Prisma v7+
+//  Nova forma para Prisma v7+
 const prisma = new PrismaClient(); 
 
 const PORT = process.env.PORT || 4001;
