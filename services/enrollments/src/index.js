@@ -65,5 +65,5 @@ app.get('/health', (req, res) => {
 });
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`📝 Enrollments service rodando na porta ${PORT}`);
+  console.log(`Enrollments service rodando na porta ${PORT}`);
 });

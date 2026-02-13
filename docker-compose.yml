@@ -59,6 +59,8 @@ services:
       POSTGRES_USER: kong
       POSTGRES_PASSWORD: kongpassword
       POSTGRES_DB: kong
+    volumes:
+      - postgres_kong:/var/lib/postgresql/data
     networks:
       - edu-net
     healthcheck:
@@ -99,8 +101,6 @@ services:
     ports:
       - "8000:8000"
       - "8001:8001"
-    volumes:
-      - ./kong/kong.yml:/usr/local/kong/declarative/kong.yml:ro
     networks:
       - edu-net
     restart: unless-stopped
@@ -119,8 +119,7 @@ services:
     restart: unless-stopped
 
   auth-service:
-    image: edu-platform-auth-service:latest
-    #build: ./services/auth
+    image: edu-platform-auth-service:1.0
     environment:
       PORT: 4001
       DATABASE_URL: postgresql://eduuser:edupass@postgres-auth:5432/auth_db
@@ -135,8 +134,7 @@ services:
     restart: unless-stopped
 
   courses-service:
-    image: edu-platform-courses-service:latest
-    #build: ./services/courses
+    image: edu-platform-courses-service:1.0
     environment:
       PORT: 4002
       DATABASE_URL: postgresql://eduuser:edupass@postgres-courses:5432/courses_db
@@ -150,8 +148,7 @@ services:
     restart: unless-stopped
 
   enrollments-service:
-    image: edu-platform-enrollments-service:latest
-    #build: ./services/enrollments
+    image: edu-platform-enrollments-service:1.0
     environment:
       PORT: 4003
       DATABASE_URL: postgresql://eduuser:edupass@postgres-enrollments:5432/enrollments_db
@@ -165,8 +162,7 @@ services:
     restart: unless-stopped
 
   public-frontend:
-    image: edu-platform-public-frontend:latest
-    #build: ./frontends/public
+    image: edu-platform-public-frontend:1.1
     expose:
       - "3000"
     networks:
@@ -174,8 +170,7 @@ services:
     restart: unless-stopped
 
   private-frontend:
-    image: edu-platform-private-frontend:latest
-    #build: ./frontends/private
+    image: edu-platform-private-frontend:1.0
     expose:
       - "3000"
     networks:
@@ -186,6 +181,7 @@ volumes:
   postgres_auth:
   postgres_courses:
   postgres_enrollments:
+  postgres_kong:
 
 networks:
   edu-net:

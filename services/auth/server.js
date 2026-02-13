@@ -22,10 +22,10 @@ const connectWithRetry = async () => {
   while (retries) {
     try {
       await prisma.$connect();
-      console.log('✅ Auth service conectado ao PostgreSQL');
+      console.log('Auth service conectado ao PostgreSQL');
       return;
     } catch (err) {
-      console.log(`❌ Tentativa ${11 - retries}/10: Falha ao conectar ao PostgreSQL...`);
+      console.log(` Tentativa ${11 - retries}/10: Falha ao conectar ao PostgreSQL...`);
       retries -= 1;
       await new Promise(res => setTimeout(res, 5000)); // Espera 5 segundos
     }
@@ -43,7 +43,7 @@ app.post('/register', async (req, res) => {
     
     const hashed = await bcrypt.hash(password, 12);
     
-    // ✅ Correção aqui: adicionar "data:"
+ 
     const user = await prisma.user.create({
       data: { name, email, password: hashed }
     });
@@ -103,6 +103,6 @@ process.on('uncaughtException', (err) => {
 // Iniciar conexão e servidor
 connectWithRetry().then(() => {
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🔐 Auth service rodando na porta ${PORT}`);
+    console.log(` Auth service rodando na porta ${PORT}`);
   });
 });
